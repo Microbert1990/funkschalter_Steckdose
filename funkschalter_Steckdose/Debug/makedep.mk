@@ -2,11 +2,13 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-hwabs.c
+eeprom_memory.c
+
+hal.c
 
 hwcfg.c
 
-drv.c
+hwspec.c
 
 main.c
 

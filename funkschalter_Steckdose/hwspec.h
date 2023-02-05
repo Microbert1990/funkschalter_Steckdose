@@ -1,13 +1,13 @@
 /*
- * drv.h
+ * hwspec.h
  *
  * Created: 10.01.2023 19:46:25
  *  Author: Microbert
  */ 
 
 
-#ifndef DRV_H_
-#define DRV_H_
+#ifndef HWSPEC_H_
+#define HWSPEC_H_
 
 #include <avr/io.h>
 
@@ -32,14 +32,14 @@
 
 #define SLEEP	__asm__ __volatile__ ("sleep")			/* sleep mode command is only accesseble via assembler command */
 
-void Drv_SleepEnable();
-void Drv_SleepDisable();
-void Drv_InterruptsEnable();
-void Drv_InterruptsDisable();
+void Hwspec_SleepEnable();
+void Hwspec_SleepDisable();
+void Hwspec_InterruptsEnable();
+void Hwspec_InterruptsDisable();
 
 /* Warning! BLACK MAGIC */
 
-static inline void __attribute__((always_inline)) Drv_Delay_us(uint16_t count)
+static inline void __attribute__((always_inline)) Hwspec_Delay_us(uint16_t count)
 {
 	/* this loop takes 4 * count + 3 ticks */
 	/* 1us equals 8 ticks at 8 MHz CPU-Clk */
@@ -51,12 +51,12 @@ static inline void __attribute__((always_inline)) Drv_Delay_us(uint16_t count)
 					: "+w" (count));
 };
 
-void Drv_SendPulse(uint16_t t_high, uint16_t t_low);
-void Drv_InitPCINT();
-void Drv_InitGPIOs();
+void Hwspec_SendPulse(uint16_t t_high, uint16_t t_low);
+void Hwspec_InitPCINT();
+void Hwspec_InitGPIOs();
 
-uint8_t Drv_GetInputsPINB();
-void Drv_SetOutputPORTB(uint8_t pin);
-void Drv_ClearOutputPORTB(uint8_t pin);
+uint8_t Hwspec_GetInputsPINB();
+void Hwspec_SetOutputPORTB(uint8_t pin);
+void Hwspec_ClearOutputPORTB(uint8_t pin);
 
-#endif /* DRV_H_ */
+#endif /* HWSPEC_H_ */

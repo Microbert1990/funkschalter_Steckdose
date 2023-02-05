@@ -37,9 +37,10 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../hwabs.c \
+../eeprom_memory.c \
+../hal.c \
 ../hwcfg.c \
-../drv.c \
+../hwspec.c \
 ../main.c \
 ../rc.c
 
@@ -51,30 +52,34 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-hwabs.o \
+eeprom_memory.o \
+hal.o \
 hwcfg.o \
-drv.o \
+hwspec.o \
 main.o \
 rc.o
 
 OBJS_AS_ARGS +=  \
-hwabs.o \
+eeprom_memory.o \
+hal.o \
 hwcfg.o \
-drv.o \
+hwspec.o \
 main.o \
 rc.o
 
 C_DEPS +=  \
-hwabs.d \
+eeprom_memory.d \
+hal.d \
 hwcfg.d \
-drv.d \
+hwspec.d \
 main.d \
 rc.d
 
 C_DEPS_AS_ARGS +=  \
-hwabs.d \
+eeprom_memory.d \
+hal.d \
 hwcfg.d \
-drv.d \
+hwspec.d \
 main.d \
 rc.d
 
@@ -92,7 +97,14 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-./hwabs.o: .././hwabs.c
+./eeprom_memory.o: .././eeprom_memory.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)F:\Programming\Atmel Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"F:\Programming\Atmel Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=attiny45 -B "F:\Programming\Atmel Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\gcc\dev\attiny45" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./hal.o: .././hal.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)F:\Programming\Atmel Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"F:\Programming\Atmel Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=attiny45 -B "F:\Programming\Atmel Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\gcc\dev\attiny45" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
@@ -106,7 +118,7 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
-./drv.o: .././drv.c
+./hwspec.o: .././hwspec.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)F:\Programming\Atmel Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"F:\Programming\Atmel Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=attiny45 -B "F:\Programming\Atmel Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\gcc\dev\attiny45" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

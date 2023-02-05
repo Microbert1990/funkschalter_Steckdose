@@ -9,7 +9,11 @@
 #ifndef RC_H_
 #define RC_H_
 
+//#define ON_CMD	0x01FDC990
+//#define OFF_CMD 0x01FDC988
 
+
+void Rc_SendMsg(uint8_t cmd);
 
 
 

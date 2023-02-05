@@ -14,51 +14,76 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
+#include "global.h"
 #include "hwcfg.h"
-#include "hwabs.h"
-#include "drv.h"
+#include "hal.h"
+#include "hwspec.h"
 #include "rc.h"
+#include "eeprom_memory.h"
 
 void send_byte(uint32_t);
 void init_PCINT();
 
-#define ON_CMD	0x01FDC990
-#define OFF_CMD 0x01FDC988
+typedef enum STATES{
+	INIT,
+	IDLE,
+	RECORDING,
+	PROCESSING,
+	SENDING,
+	POWERDOWN
+} State_t; 
 
+State_t State;
 
 // TODO: Set up State Machine
 // TODO: Recording of new Signals with Receiver
 int main(void)
 {	
-	Hwcfg_Init();
-	while(1)
-    {	
-		if( Hwabs_GetInput() == 2){
-			Hwabs_RCTransmitterOn();
-			_delay_ms(20);
-			Hwabs_SendData(ON_CMD, 25);
-			_delay_ms(20);
-			Hwabs_SendData(ON_CMD, 25);
-			_delay_ms(20);
-			Hwabs_SendData(ON_CMD, 25);
-			_delay_ms(20);
-		}
-		else if( Hwabs_GetInput() == OFF_BTN_PIN) {
-			Hwabs_RCTransmitterOn();
-			_delay_ms(20);
-			Hwabs_SendData(OFF_CMD, 25);
-			_delay_ms(20);
-			Hwabs_SendData(OFF_CMD, 25);
-			_delay_ms(20);
-			Hwabs_SendData(OFF_CMD, 25);
-			_delay_ms(20);
-		}
+	uint8_t inputs = 0;
+	switch(State)
+	{
+		case INIT:
+			Hwcfg_Init();	/* Init hardware */
+			State = IDLE;
+			break;
 		
-		Hwabs_RCTransmitterOff();
+		case IDLE:
+			inputs = Hal_GetInput();	/* get button states */
+			if(!inputs) {
+				break;
+			} else if(inputs == REC_CMD) {	/* both buttons pressed */
+				State = RECORDING;
+				break;
+			} else {
+				State = SENDING;
+			break;
+			}
+		case RECORDING:
+			Hal_RCTransceiverOn();
+			break;
+			
+		case PROCESSING:
+			break;
+			
+		case SENDING:
+			if(inputs == SWITCH_OFF)
+				Rc_SendMsg(SWITCH_OFF);
+			else
+				Rc_SendMsg(SWITCH_ON);
+			
+			Hal_RCTransceiverOff();
+			State = POWERDOWN;
+			break;
+			
+		case POWERDOWN:
+			Hal_SetInterrupts(true);
+			Hal_Powerdown();
+			Hal_SetInterrupts(false);
+			State = IDLE;
+			break;
 		
-		Hwabs_SetInterrupts(true);
-		Hwabs_Powerdown();
-		Hwabs_SetInterrupts(false);
+		default:	
+			break;
 	}
 }
 

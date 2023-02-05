@@ -120,10 +120,19 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="hwabs.c">
+    <Compile Include="eeprom_memory.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="hwabs.h">
+    <Compile Include="eeprom_memory.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="global.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="hal.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="hal.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="hwcfg.c">
@@ -132,10 +141,10 @@
     <Compile Include="hwcfg.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="drv.h">
+    <Compile Include="hwspec.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="drv.c">
+    <Compile Include="hwspec.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">

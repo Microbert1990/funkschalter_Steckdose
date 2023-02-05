@@ -5,10 +5,11 @@
  *  Author: Microbert
  */ 
 #include "hwcfg.h"
-#include "drv.h"
+#include "hwspec.h"
 
 void Hwcfg_Init()
 {	
-	Drv_InitGPIOs();
-	Drv_InitPCINT();
+	Hwspec_InitGPIOs();
+	Hwspec_InitPCINT();
+	Hal_InitCmds();
 }
